@@ -4,7 +4,7 @@ const Subscriber = require("../models/subscriber");
 
 module.exports = {
     index:(req,res,next) => {
-        Subscriber.find()
+        Subscriber.find({})
         .then(subscribers =>{
             res.local.subscribers =subscribers;
             next()
@@ -15,8 +15,12 @@ module.exports = {
         })
     },
     indexView:(req,res)=> {
+        res.render("/subscribers/index");
+    },
+    new:(req,res)=> {
         res.render("/subscribers/new");
     },
+    
     create:(req,res, next) => {
         let newSubscriber = new Subscriber({
             name : req.body.name,
@@ -66,7 +70,7 @@ module.exports = {
     },
     update:(req,res, next) => {
         let subscriberId = req.params.id;
-        let updstedSubscriber = new Subscriber({
+        let updatedSubscriber = new Subscriber({
             name : req.body.name,
             email:req.body.email,
             zipCode: req.body.zipCode
@@ -97,4 +101,4 @@ module.exports = {
     }
 
 
-}
+};

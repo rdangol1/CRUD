@@ -1,4 +1,3 @@
-const subscriber = require("./models/subscriber");
 
 const express = require ("express"),
 app = express(),
@@ -6,23 +5,35 @@ router =express.Router(),
 homeController = require("./controllers/homecontroller"),
 errorController = require("./controllers/errorController"),
 subscribersController =  require("./controllers/subscribersController"),
+coursesController =  require("./controllers/coursesController"),
+usersController =  require("./controllers/usersController"),
 methodOverride = require("method-override"),
 layouts = require("express-ejs-layouts"), mongoose = require("mongoose") ;
+const Subscriber = require("./models/subscriber");
 
+/* mongoose.connect("mongodb://localhost:27017/confetti_cuisine",
+    {useNewUrlParse: true}
+); */
+mongoose.connect("mongodb://localhost:27017/confetti_cuisine", { useNewUrlParser: true, useUnifiedTopology: true  });
+mongoose.createConnection("mongodb://localhost:27017/confetti_cuisine", { useNewUrlParser: true, useUnifiedTopology: true  });
 
-mongoose.connect("mongodb://localhost:27017/confetti_cuisine",
-    {useNewUrlParse: true});
+mongoose.set("useCreateIndex", true);
 
+const db = mongoose.connection;
+
+db.once("open", () => {
+    console.log("Successfully connected to MongoDB using Mongoose!");
+});
 app.set("port", process.env.PORT || 3000);
 
 app.set("view engine", "ejs");
 router.use(layouts);
 
-app.get("/", homeController.showIndex);
+//router.get("/", homeController.showIndex);
 
 router.use(express.static("public"))
 
-app.use(
+router.use(
     express.urlencoded({
         extended:false
     })
@@ -60,7 +71,7 @@ router.delete("/users/:id/delete", usersController.delete, usersController.redir
 
 router.use(errorController.pageNotFoundError);
 router.use(errorController.internalServerError);
-router.use("/", router);
+app.use("/", router);
 
 app.listen(app.get("port"), () => {
    console.log(`Server is running on port: ${app.get("port")}`)

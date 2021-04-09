@@ -23,8 +23,8 @@ userSchema = new Schema(
         zipCode:{
             type: Number,
             default:0,
-            min =[10000, "Zipcode is too short"],
-            max =[99999]
+            min :[10000, "Zipcode is too short"],
+            max :[99999]
 
         },
         password:{
@@ -32,11 +32,11 @@ userSchema = new Schema(
             required: true
 
         },
-        courses: [{type: Schema.Types.ObjectId, ref:Course}],
-        subscribedAccount: {type: Schema.Types.ObjectId, ref:Subscriber}
+        courses: [{type: Schema.Types.ObjectId, ref:"Course"}],
+        subscribedAccount: {type: Schema.Types.ObjectId, ref:"Subscriber"}
     },
     {
-        timestamps = true
+        timestamps: true
     }
 )
 

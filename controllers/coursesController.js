@@ -4,7 +4,7 @@ const Course = require("../models/course");
 
 module.exports = {
     index:(req,res,next) => {
-        Course.find()
+        Course.find({})
         .then(courses =>{
             res.local.courses =courses;
             next()
@@ -15,8 +15,12 @@ module.exports = {
         })
     },
     indexView:(req,res)=> {
+        res.render("/courses/index");
+    },
+    new:(req,res)=> {
         res.render("/courses/new");
     },
+    
     create:(req,res, next) => {
         let newCourse = new Course({
             title:req.body.title,

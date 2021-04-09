@@ -1,4 +1,7 @@
 "use strict";
+const subscriber = require("./subscriber");
+
+
 const mongoose = require("mongoose"),
     subscriberSchema = mongoose.Schema({
         name: {
@@ -17,9 +20,10 @@ const mongoose = require("mongoose"),
             max: 99999
 
         },
-        courses: [{type : mongoose.Schema.Types.ObjectId,ref: Course}]
-    }, {
-        timestamps:true
+        courses: [{type : mongoose.Schema.Types.ObjectId,ref: "Course"}]
+        }, 
+        {
+            timestamps:true
     });
 
 subscriberSchema.methods.getInfo = function(){

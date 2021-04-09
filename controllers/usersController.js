@@ -4,7 +4,7 @@ const User = require("../models/user");
 
 module.exports = {
     index:(req,res,next) => {
-        User.find()
+        User.find({})
         .then(users =>{
             res.local.users =users;
             next()
@@ -15,8 +15,12 @@ module.exports = {
         })
     },
     indexView:(req,res)=> {
+        res.render("/users/index");
+    },
+    new:(req,res)=> {
         res.render("/users/new");
     },
+    
     create:(req,res, next) => {
         let newUser = new User({
             name : {
