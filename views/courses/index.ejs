@@ -2,17 +2,17 @@
 <table class = "table">
     <thead>
         <tr>
-            <th> Name</th>
-            <th> Email</th>
+            <th> Title</th>
+            <th> Description</th>
             <th> Edit</th>
             <th> Delete</th>
         </tr>
     </thead>
     <tbody>
-        <% course.forEach(course =>{ %>
+        <% courses.forEach(course =>{ %>
             <tr>
                 <td>
-                    <a href = "<%= `/courses/$course._id ` %>">
+                    <a href = "<%= `/courses/${course._id} ` %>">
                         <%= course.title %>
                     </a>
                 </td>

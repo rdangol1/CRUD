@@ -1,11 +1,18 @@
 <div class ="form-data">
-    <form action ="/course/${course._id}/update? _method=PUT" method ="POST">
+    <form action ="<%= `/course/${course._id}/update? _method=PUT`%>" method ="POST">
         <label for ="txtTitle">Title</label>
         <input type = "text" name ="title" id ="txtTitle" autofocus required value ="<%= course.title%>">
-        <label for ="txtDescription"> Email </label>
+
+        <label for ="txtDescription"> Description </label>
         <input type = "text" name ="description" id ="txtDescription" required value ="<%= course.description%>">
+
+        <label for ="txtMax">Max Students</label>
+        <input type = "number" name ="maxStudents" id ="txtMax" required value ="<%= course.maxStudents%>">
+
+        <label for ="txtCost"> Cost </label>
+        <input type = "number" name ="cost" id ="txtCost" required value ="<%= course.cost%>">
         
-        <buttton type ="submit"> Save </buttton>
+        <input  class="btn btn-lg btn-primary btn" type ="submit"></buttton>
 
     </form>
 </div>

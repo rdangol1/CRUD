@@ -1,7 +1,7 @@
 
 const express = require ("express"),
 app = express(),
-router =express.Router(),
+router = express.Router(),
 homeController = require("./controllers/homecontroller"),
 errorController = require("./controllers/errorController"),
 subscribersController =  require("./controllers/subscribersController"),
@@ -9,13 +9,17 @@ coursesController =  require("./controllers/coursesController"),
 usersController =  require("./controllers/usersController"),
 methodOverride = require("method-override"),
 layouts = require("express-ejs-layouts"), mongoose = require("mongoose") ;
-const Subscriber = require("./models/subscriber");
+Subscriber = require("./models/subscriber");
+Course = require("./models/course");
+User = require("./models/user");
 
 /* mongoose.connect("mongodb://localhost:27017/confetti_cuisine",
     {useNewUrlParse: true}
 ); */
-mongoose.connect("mongodb://localhost:27017/confetti_cuisine", { useNewUrlParser: true, useUnifiedTopology: true  });
-mongoose.createConnection("mongodb://localhost:27017/confetti_cuisine", { useNewUrlParser: true, useUnifiedTopology: true  });
+mongoose.connect("mongodb://localhost:27017/confetti_cuisine", { useNewUrlParser: true  });
+//mongoose.createConnection("mongodb://localhost:27017/confetti_cuisine", { useNewUrlParser: true, useUnifiedTopology: true  });
+
+mongoose.Promise = global.Promise;
 
 mongoose.set("useCreateIndex", true);
 
@@ -27,11 +31,12 @@ db.once("open", () => {
 app.set("port", process.env.PORT || 3000);
 
 app.set("view engine", "ejs");
+
 router.use(layouts);
 
 //router.get("/", homeController.showIndex);
 
-router.use(express.static("public"))
+app.use(express.static("public"))
 
 router.use(
     express.urlencoded({
@@ -42,10 +47,11 @@ router.use(express.json());
 
 router.use(methodOverride("_method", {methods : ["POST", "GET"]}));
 
+
 router.get("/", homeController.index);
 
 router.get("/subscribers",subscribersController.index, subscribersController.indexView);
-router.get("/subscribers/new",subscribersController.new);
+router.get("/subscribers/new", subscribersController.new);
 router.post("/subscribers/create", subscribersController.create, subscribersController.redirectView);
 router.get("/subscribers/:id", subscribersController.show, subscribersController.showView);
 router.get("/subscribers/:id/edit", subscribersController.edit);

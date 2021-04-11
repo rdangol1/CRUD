@@ -1,28 +1,28 @@
 "use strict";
-const user = require("../models/user");
+
 const User = require("../models/user");
 
 module.exports = {
     index:(req,res,next) => {
-        User.find({})
+        User.find()
         .then(users =>{
-            res.local.users =users;
-            next()
+            res.locals.users = users;
+            next();
         })
         .catch( error =>{
             console.log(`Error fetching user data: ${error.message}`);
             next(error);
-        })
+        });
     },
     indexView:(req,res)=> {
-        res.render("/users/index");
+        res.render("users/index");
     },
     new:(req,res)=> {
-        res.render("/users/new");
+        res.render("users/new");
     },
     
     create:(req,res, next) => {
-        let newUser = new User({
+        let newUser ={
             name : {
                 first:req.body.first,
                 last:req.body.last
@@ -30,17 +30,17 @@ module.exports = {
             email:req.body.email,
             password:req.body.password,
             zipCode: req.body.zipCode
-        });
-        user.create(newUser)
-        .then( user => {
-            req.locals.user = user;
-            res.locals.redirect = "/users";
+        };
+        User.create(newUser)
+        .then( users => {
+            res.locals.redirect = "/users";  
+            res.locals.users = users;
             next();
         })
         .catch( error => {
             console.log(`Error saving user: ${error.message}`);
             next(error)
-        })
+        });
     },
     redirectView: (req,res, next) => {
         let redirectPath = res.locals.redirect;
@@ -59,13 +59,13 @@ module.exports = {
         })
     },
     showView:(req,res, next) => {
-        res.render(users/show);
+        res.render("users/show");
     },
     edit: (req,res, next) => {
         let userId = req.params.id;
         User.findById(userId)
         .then( user => {
-            res.render("/users/edit", {user});
+            res.render("users/edit", {user});
         })
         .catch (error =>{
             console.log(`Error fetching user by ID: ${error.message}`);
@@ -86,8 +86,8 @@ module.exports = {
         });
         User.findByIdAndUpdate(userId, updatedUser)
         .then(user => {
-            res.local.user = user;
-            res.local.redirect =`/users/${user._id}`;
+            res.locals.user = user;
+            res.locals.redirect =`/users/${user._id}`;
             next();
         })
         .catch(error =>{

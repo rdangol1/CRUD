@@ -1,4 +1,4 @@
-const subscriber = require("./subscriber");
+const Subscriber = require("./subscriber");
 
 const mongoose = require("mongoose"),
 {Schema } = require("mongoose"),

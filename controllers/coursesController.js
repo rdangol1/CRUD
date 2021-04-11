@@ -1,37 +1,39 @@
 "use strict";
-const course = require("../models/course");
+
 const Course = require("../models/course");
 
 module.exports = {
     index:(req,res,next) => {
         Course.find({})
-        .then(courses =>{
-            res.local.courses =courses;
-            next()
-        })
-        .catch( error =>{
-            console.log(`Error fetching course data: ${error.message}`);
-            next(error);
-        })
+            .then(courses => {
+                
+                res.locals.courses = courses;
+                next();
+            })
+            .catch( error =>{
+                console.log(`Error fetching course data: ${error.message}`);
+                next(error);
+            });
     },
     indexView:(req,res)=> {
-        res.render("/courses/index");
+        res.render("courses/index");
     },
     new:(req,res)=> {
-        res.render("/courses/new");
+        res.render("courses/new");
     },
     
-    create:(req,res, next) => {
-        let newCourse = new Course({
-            title:req.body.title,
-            description:req.body. description,
+    create:(req, res, next) => {
+        let newCourse = {
+            title: req.body.title,
+            description: req.body.description,
             maxStudent: req.body.maxStudent,
             cost:req.body.cost
-        });
-        course.create(newCourse)
+        };
+        Course.create(newCourse)
         .then( course => {
-            req.locals.course = course;
             res.locals.redirect = "/courses";
+            res.locals.course = course;
+            
             next();
         })
         .catch( error => {
@@ -56,13 +58,13 @@ module.exports = {
         })
     },
     showView:(req,res, next) => {
-        res.render(courses/show);
+        res.render("courses/show");
     },
     edit: (req,res, next) => {
         let courseId = req.params.id;
         Course.findById(courseId)
         .then( course => {
-            res.render("/courses/edit", {course});
+            res.render("courses/edit", {course});
         })
         .catch (error =>{
             console.log(`Error fetching course by ID: ${error.message}`);
@@ -77,10 +79,10 @@ module.exports = {
             maxStudent: req.body.maxStudent,
             cost:req.body.cost
         });
-        Course.findByIdAndUpdate(courseId, updatedCourse)
+        Course.findByIdAndUpdate(courseId, { $set: updatedCourse})
         .then(course => {
-            res.local.course = course;
-            res.local.redirect =`/courses/${course._id}`;
+            res.locals.course = course;
+            res.locals.redirect =`/courses/${course._id}`;
             next();
         })
         .catch(error =>{
@@ -99,7 +101,11 @@ module.exports = {
             console.log(`Error fetching course by ID: ${error.message}`);
             next(error);
         })
+    },
+    redirectView: (req, res, next) => {
+        let redirectPath = res.locals.redirect;
+        if (redirectPath !== undefined) res.redirect(redirectPath);
+        else next();
     }
 
-
-}
+};

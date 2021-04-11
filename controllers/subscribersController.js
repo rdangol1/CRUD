@@ -1,36 +1,38 @@
 "use strict";
-const subscriber = require("../models/subscriber");
+
 const Subscriber = require("../models/subscriber");
 
 module.exports = {
     index:(req,res,next) => {
         Subscriber.find({})
         .then(subscribers =>{
-            res.local.subscribers =subscribers;
-            next()
+            res.locals.subscribers = subscribers;
+            next();
         })
         .catch( error =>{
             console.log(`Error fetching subscriber data: ${error.message}`);
             next(error);
-        })
+        });
     },
     indexView:(req,res)=> {
-        res.render("/subscribers/index");
+        res.render("subscribers/index");
     },
-    new:(req,res)=> {
-        res.render("/subscribers/new");
-    },
+    new: (req, res) => {
+        res.render("subscribers/new");
+      },
+
     
     create:(req,res, next) => {
-        let newSubscriber = new Subscriber({
+        let newSubscriber = {
             name : req.body.name,
             email:req.body.email,
             zipCode: req.body.zipCode
-        });
-        subscriber.create(newSubscriber)
-        .then( subscriber => {
-            req.locals.subscriber = subscriber;
+        };
+        Subscriber.create(newSubscriber)
+        .then(subscriber => {
             res.locals.redirect = "/subscribers";
+            res.locals.subscriber = subscriber;
+            
             next();
         })
         .catch( error => {
@@ -40,7 +42,7 @@ module.exports = {
     },
     redirectView: (req,res, next) => {
         let redirectPath = res.locals.redirect;
-        if(redirectPath != undefined )res.redirect(redirectPath);
+        if(redirectPath !== undefined )res.redirect(redirectPath);
         else next();
     },
     show: (req,res, next) => {
@@ -55,13 +57,13 @@ module.exports = {
         })
     },
     showView:(req,res, next) => {
-        res.render(subscribers/show);
+        res.render("subscribers/show");
     },
     edit: (req,res, next) => {
         let subscriberId = req.params.id;
         Subscriber.findById(subscriberId)
         .then( subscriber => {
-            res.render("/subscribers/edit", {subscriber});
+            res.render("subscribers/edit", {subscriber});
         })
         .catch (error =>{
             console.log(`Error fetching subscriber by ID: ${error.message}`);
@@ -78,8 +80,8 @@ module.exports = {
         });
         Subscriber.findByIdAndUpdate(subscriberId, updatedSubscriber)
         .then(subscriber => {
-            res.local.subscriber = subscriber;
-            res.local.redirect =`/subscribers/${subscriber._id}`;
+            res.locals.subscriber = subscriber;
+            res.locals.redirect =`/subscribers/${subscriber._id}`;
             next();
         })
         .catch(error =>{
