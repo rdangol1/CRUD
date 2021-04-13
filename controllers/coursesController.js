@@ -40,11 +40,8 @@ module.exports = {
             console.log(`Error saving course: ${error.message}`);
             next(error)
         })
-    },
-    redirectView: (req,res, next) => {
-        let redirectPath = res.locals.redirect;
-        if(redirectPath != undefined )res.redirect(redirectPath);
-        else next();
+    
+    
     },
     show: (req,res, next) => {
         let courseId = req.params.id;
@@ -64,7 +61,7 @@ module.exports = {
         let courseId = req.params.id;
         Course.findById(courseId)
         .then( course => {
-            res.render("courses/edit", {course});
+            res.render("courses/edit", {course: course});
         })
         .catch (error =>{
             console.log(`Error fetching course by ID: ${error.message}`);
@@ -76,10 +73,10 @@ module.exports = {
         let updatedCourse = new Course({
             title:req.body.title,
             description:req.body. description,
-            maxStudent: req.body.maxStudent,
+            maxStudents: req.body.maxStudents,
             cost:req.body.cost
         });
-        Course.findByIdAndUpdate(courseId, { $set: updatedCourse})
+        Course.findByIdAndUpdate(courseId,  updatedCourse)
         .then(course => {
             res.locals.course = course;
             res.locals.redirect =`/courses/${course._id}`;
@@ -92,7 +89,7 @@ module.exports = {
     },
     delete:(req,res, next) => {
         let courseId = req.params.id;
-        Course.findByIdAndRemove(courseId)
+        Course.findByIdAndDelete(courseId)
         .then(() =>{
             res.locals.redirect ="/courses";
             next();

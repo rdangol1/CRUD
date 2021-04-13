@@ -12,7 +12,7 @@
         <% subscribers.forEach(subscriber =>{ %>
             <tr>
                 <td>
-                    <a href = "<%= `/subscribers/$subscriber._id ` %>">
+                    <a href = "<%= `/subscribers/${subscriber._id} ` %>">
                         <%= subscriber.name %>
                     </a>
                 </td>
@@ -23,12 +23,12 @@
                     <%= subscriber.zipCode %>
                 </td>
                 <td>
-                    <a href = "<%= `/subscribers/${subscriber._id}/edit ` %>">
+                    <a href = "<%= `subscribers/${subscriber._id}/edit ` %>">
                         Edit
                     </a>
                 </td>
                 <td>
-                    <a href = "<%= `/subscribers/${subscriber._id}delete?_method =DELETE` %>" onclick="return confirm('Are you sure?')">
+                    <a href = "<%= `subscribers/${subscriber._id}delete?_method=DELETE` %>" onclick="return confirm('Are you sure?')">
                         Delete
                     </a>
                 </td>

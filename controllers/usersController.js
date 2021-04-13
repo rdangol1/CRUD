@@ -42,11 +42,7 @@ module.exports = {
             next(error)
         });
     },
-    redirectView: (req,res, next) => {
-        let redirectPath = res.locals.redirect;
-        if(redirectPath != undefined )res.redirect(redirectPath);
-        else next();
-    },
+    
     show: (req,res, next) => {
         let userId = req.params.id;
         User.findById(userId)
@@ -106,7 +102,12 @@ module.exports = {
             console.log(`Error fetching user by ID: ${error.message}`);
             next(error);
         })
-    }
+    },
+    redirectView: (req,res, next) => {
+        let redirectPath = res.locals.redirect;
+        if(redirectPath != undefined )res.redirect(redirectPath);
+        else next();
+    },
 
 
 }

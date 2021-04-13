@@ -12,7 +12,7 @@
         <% courses.forEach(course =>{ %>
             <tr>
                 <td>
-                    <a href = "<%= `/courses/${course._id} ` %>">
+                    <a href = "<%= `/courses/${course._id}` %>">
                         <%= course.title %>
                     </a>
                 </td>
@@ -21,12 +21,12 @@
                 </td>
                
                 <td>
-                    <a href = "<%= `/courses/${course._id}/edit ` %>">
+                    <a href = "<%=`courses/${course._id}/edit`%>">
                         Edit
                     </a>
                 </td>
                 <td>
-                    <a href = "<%= `/courses/${course._id}delete?_method =DELETE` %>" onclick="return confirm('Are you sure?')">
+                    <a href = "<%= `courses/${course._id}delete?_method=DELETE` %>" onclick="return confirm('Are you sure?')">
                         Delete
                     </a>
                 </td>
