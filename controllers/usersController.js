@@ -137,7 +137,7 @@ module.exports = {
     validate: (req, res, next) => {
         req.sanitizeBody("email").normalizeEmail({
             all_lowercase: true
-          }).trim();
+          }).trim(); 
         req.check("email", "Email is invalid").isEmail();
         req.check("zipCode", "Zip code is invalid").notEmpty().isInt().isLength({
             min: 5,

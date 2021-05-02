@@ -1,15 +1,14 @@
 $(document).ready(() => {
-    $("#modal-button").click(() => {
-      $(".modal-body").html("");
-      $.get("/api/courses", (results = {}) => {
-        let data = results.data;
-        if (!data || !data.courses) return;
-        data.courses.forEach((course) => {
-          $(".modal-body").append(
+  $("#modal-button").click(() => {
+    $(".modal-body").html("");
+    $.get("/api/courses", (results = {}) => {
+      let data = results.data;
+      if (!data || !data.courses) return;
+      data.courses.forEach(course => {
+        $(".modal-body").append(
+          
             `<div>
-                <span class="course-title">
-                ${course.title}
-                </span>
+                <span class="course-title">${course.title}</span>
                 <span class="course-cost">$${course.cost}</span>
                 <button class="${course.joined ? "joined-button":"join-button"}  btn btn-info btn-sm" data-id="${course._id}">
                     ${course.joined ? "Joined": "Join"}

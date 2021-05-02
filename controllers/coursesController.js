@@ -40,7 +40,7 @@ module.exports = {
         })
         .catch( error => {
             console.log(`Error saving course: ${error.message}`);
-            next(error)
+             next(error)
         })
     },
     redirectView: (req,res, next) => {
