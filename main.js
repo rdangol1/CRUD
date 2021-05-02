@@ -36,6 +36,7 @@ db.once("open", () => {
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
 
+app.use(express.static("public"));
 app.use(layouts);
 app.use(
   express.urlencoded({
@@ -50,18 +51,17 @@ app.use(
   })
 );
 
-// router vs app
-app.use(express.json());
 
-router.use(expressValidator());
+
+app.use(expressValidator());
 app.use(bodyParser.urlencoded({
     extended: true
   }));
 
 app.use(express.static("public"));
 
-
-
+// router vs app
+app.use(express.json());
 app.use(cookieParser("my_passcode"));
 app.use(
   expressSession({
@@ -71,7 +71,8 @@ app.use(
     },
     resave: false,
     saveUninitialized: false
-  }));
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -88,8 +89,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
-router.use(methodOverride("_method", {methods : ["POST", "GET"]}));
 
 app.use("/", router);
 
