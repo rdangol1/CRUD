@@ -91,39 +91,40 @@ module.exports = {
     },
     update:(req,res, next) => {
         if (req.skip) return next();
-        let userId = req.params.id;
-        let updatedUser = new User({
-            name : {
-                first:req.body.first,
-                last:req.body.last
-            },
-            email:req.body.email,
-            password:req.body.password,
-            zipCode: req.body.zipCode
-
-        });
-        User.findByIdAndUpdate(userId, updatedUser)
+        let userId = req.params.id,
+        userParams = {
+          name: {
+            first: req.body.first,
+            last: req.body.last
+          },
+          email: req.body.email,
+          password: req.body.password,
+          zipCode: req.body.zipCode
+        };
+      User.findByIdAndUpdate(userId, {
+        $set: userParams
+      })
         .then(user => {
-            res.locals.user = user;
-            res.locals.redirect =`/users/${user._id}`;
-            next();
+          res.locals.redirect = `/users/${userId}`;
+          res.locals.user = user;
+          next();
         })
-        .catch(error =>{
-            console.log(`Error fetching user by ID: ${error.message}`);
-            next(error);
-        })
+        .catch(error => {
+          console.log(`Error updating user by ID: ${error.message}`);
+          next(error);
+        });
     },
     delete:(req,res, next) => {
         let userId = req.params.id;
         User.findByIdAndRemove(userId)
-        .then(() =>{
-            res.locals.redirect ="/users";
+          .then(() => {
+            res.locals.redirect = "/users";
             next();
-        })
-        .catch(error =>{
-            console.log(`Error fetching user by ID: ${error.message}`);
-            next(error);
-        })
+          })
+          .catch(error => {
+            console.log(`Error deleting user by ID: ${error.message}`);
+            next();
+          });
     },
     login: (req, res) => {
         res.render("users/login");
