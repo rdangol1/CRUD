@@ -25,19 +25,20 @@ $(document).ready(() => {
     });
   });
   let addJoinButtonListener = () => {
-    $(".join-button").click((event) => {
+    $(".join-button").click(event => {
       let $button = $(event.target),
         courseId = $button.data("id");
-    $.get(`/api/courses/${courseId}/join`, (results = {}) => {
-      let data = results.data;
-      if (data && data.success) {
-        $button
-          .text("Joined")
-          .addClass("joined-button")
-          .removeClass("join-button");
-      } else {
-        $button.text("Try again");
-      }
+      $.get(`/api/courses/${courseId}/join`, (results = {}) => {
+        let data = results.data;
+        console.log(results);
+        if (data && data.success) {
+          $button
+            .text("Joined")
+            .addClass("joined-button")
+            .removeClass("join-button");
+        } else {
+          $button.text("Try again");
+        }
       });
     });
-  }
+  };

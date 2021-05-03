@@ -138,7 +138,7 @@ module.exports = {
                 let userJoined = currentUser.courses.some((userCourse) => {
                     return userCourse.equals(course._id);
                 });
-                return Object.assign(course.tooObject(), {joined: userJoined});
+                return Object.assign(course.toObject(), {joined: userJoined});
             });
             res.locals.courses = mappedCourses;
             next();
@@ -159,6 +159,7 @@ module.exports = {
           })
             .then(() => {
               res.locals.success = true;
+              
               next();
             })
             .catch(error => {

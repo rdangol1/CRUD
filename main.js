@@ -83,7 +83,7 @@ app.use(connectFlash());
 
 app.use((req, res, next) => {
   
-  res.locals.loggedIn = req.isUnauthenticated();
+  res.locals.loggedIn = req.isAuthenticated();
   res.locals.currentUser = req.user;
   res.locals.flashMessages = req.flash();
   next();
