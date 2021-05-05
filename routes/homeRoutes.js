@@ -1,5 +1,5 @@
 const router = require("express").Router(),
-    homeController = require("../controllers/homeController");
+    homeController = require("../controllers/homecontroller");
 
 router.get("/", homeController.index);
 
